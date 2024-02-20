@@ -46,6 +46,7 @@ if (!empty($players)) :
                 <th>Name</th>
                 <th>Gender</th>
                 <th>Team</th>
+                <th>Remove</th>
             </tr>
         </thead>
         <tbody>
@@ -55,6 +56,9 @@ if (!empty($players)) :
                     <td><?= Html::encode($player['name']) ?></td>
                     <td><?= Html::encode($player['gender']) ?></td>
                     <td><?= Html::encode($player['team']) ?></td>
+                    <td>
+                        <?= Html::a('Remove', ['players/remove', 'index' => $index], ['class' => 'btn btn-danger']) ?>
+                    </td>
                 </tr>
             <?php endforeach; ?>
         </tbody>

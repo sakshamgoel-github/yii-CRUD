@@ -35,7 +35,7 @@ class PlayersController extends Controller
         if there is no post request found then we simply render the create form.
         */
 
-        // Check if the model is loaded with POST data and if it's successfully saved
+        // Check if their is a post request
         if (Yii::$app->request->post()) {
             // Create a new session variable or retrieve the existing one
             $players = Yii::$app->session->get('players', []);
@@ -53,6 +53,20 @@ class PlayersController extends Controller
             'teams' => $teams,
         ]);
     }
+    public function actionRemove($index)
+{
+    // Retrieve the players array from the session
+    $players = Yii::$app->session->get('players', []);
+
+    // Remove the player at the specified index from the session array
+    unset($players[$index]);
+
+    // Save the updated players array back to the session
+    Yii::$app->session->set('players', $players);
+
+    // Redirect back to the view-players page
+    return $this->redirect('create');
+}
 
     public function actionSaveToDatabase()
     {
@@ -86,6 +100,7 @@ class PlayersController extends Controller
 
         return $this->redirect(['index']); // Redirect to the index page after deletion
     }
+    
     public function actionUpdate($id)
     {
         $player = players::findOne($id);
