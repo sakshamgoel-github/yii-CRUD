@@ -36,18 +36,43 @@ class PlayersController extends Controller
         */
 
         // Check if the model is loaded with POST data and if it's successfully saved
-        
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect('index');
-            }
-        
+        if (Yii::$app->request->post()) {
+            // Create a new session variable or retrieve the existing one
+            $players = Yii::$app->session->get('players', []);
 
+            // Add the newly created player to the session variable
+            $model->load(Yii::$app->request->post());
+            $players[] = $model->attributes;
+
+            // Set the session variable with the updated player array
+            Yii::$app->session->set('players', $players);
+            return $this->redirect('create');
+        }
         return $this->render('create', [
             'model' => $model,
             'teams' => $teams,
         ]);
     }
 
+    public function actionSaveToDatabase()
+    {
+        // Retrieve the players array from the session
+        $players = Yii::$app->session->get('players', []);
+
+        // Save each player to the database
+        foreach ($players as $player) {
+            $model = new players();
+            $model->attributes = $player;
+            if (!$model->save()) {
+                Yii::$app->session->setFlash('error', 'Failed to save players to the database.');
+                return $this->redirect('create');
+            }
+        }
+
+        // Clear the players array from the session after saving to the database
+        Yii::$app->session->remove('players');
+        return $this->redirect('index');
+    }
 
     public function actionDelete($id)
     {

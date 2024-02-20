@@ -32,6 +32,36 @@
     </form>
 </div>
 
+<?php
+use yii\helpers\Html;
+// Retrieve the players array from the session
+$players = Yii::$app->session->get('players', []);
+
+if (!empty($players)) :
+?>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>Team</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($players as $index => $player) : ?>
+                <tr>
+                    <td><?= $index + 1 ?></td>
+                    <td><?= Html::encode($player['name']) ?></td>
+                    <td><?= Html::encode($player['gender']) ?></td>
+                    <td><?= Html::encode($player['team']) ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+    <?= Html::a('Save Players to Database', ['players/save-to-database'], ['class' => 'btn btn-success']) ?>
+<?php endif; ?>
+
 
 
 
