@@ -30,13 +30,10 @@ $genderArray = ["M" => "Male", "F" => "Female"]
                     <?= Html::a('Update', ['update', 'id' => $player->id], ['class' => 'btn btn-primary']) ?>
                 </td>
                 <td>
-                    <?= Html::a('Delete', ['delete', 'id' => $player->id], [
-                        'class' => 'btn btn-danger',
-                        'data' => [
-                            'confirm' => 'Are you sure you want to delete this player?',
-                            'method' => 'post',
-                        ],
-                    ]) ?>
+                    <form method="post" action="<?= Yii::$app->urlManager->createUrl(['players/delete', 'id' => $player->id]) ?>" onsubmit="return confirm('Are you sure you want to delete this player?');">
+                        <?= Html::hiddenInput(Yii::$app->request->csrfParam, Yii::$app->request->csrfToken) ?>
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
                 </td>
             </tr>
         <?php endforeach; ?>
