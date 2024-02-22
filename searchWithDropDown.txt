@@ -1,0 +1,13 @@
+<?php 
+use kartik\select2\Select2;
+
+?>
+
+<?= Select2::widget([
+    'name' => 'state',
+    'data' => $teams, // the data for the select
+    'options' => ['placeholder' => 'Select option...'],
+    'pluginOptions' => [
+        'allowClear' => true,
+    ],
+]); ?>
